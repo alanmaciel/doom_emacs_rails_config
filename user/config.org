@@ -85,24 +85,24 @@ If you use `org' and don't want your org files in the default location below, ch
 ** Splash image
 Set splash image
 #+begin_src emacs-lisp
-;; (setq fancy_splash_image "~dotfiles_local_emacs_doom_d_splash_lucky_doom_emacs_color_png")
+;; (setq fancy-splash-image "~/dotfiles-local/emacs/doom.d/splash/lucky-doom-emacs-color.png")
 #+end_src
 
 Remove splash image
 #+begin_src emacs-lisp
-(remove_hook '+doom_dashboard_functions #'doom_dashboard_widget_banner)
+(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
 #+end_src
 
 ** Footer
 Remove footer
 #+begin_src emacs-lisp
-(remove_hook '+doom_dashboard_functions #'doom_dashboard_widget_footer)
+(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-footer)
 #+end_src
 ** Theme
 Select the colors you like
 #+begin_src emacs-lisp
-(setq doom-theme 'doom-monokai-octagon
-      doom-themes-treemacs-enable-variable-pitch nil)
+;; (setq doom-theme 'doom-monokai-octagon
+;;       doom-themes-treemacs-enable-variable-pitch nil)
 #+end_src
 
 *** Custom themes
@@ -141,10 +141,10 @@ Change themes depending the time of the day
 ** Fonts
 My recommendation is JetBrains Mono. Use M-x reload-user-settings to see the font change
 #+begin_src emacs-lisp
-(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font Mono" :size 12)
+(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font Mono" :size 14)
       doom-big-font (font-spec :family "JetBrains Mono" :size 18)
-      doom-variable-pitch-font (font-spec :family "Overpass" :size 12)
-      doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
+      doom-variable-pitch-font (font-spec :family "Overpass" :size 10)
+      doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light :size 10))
 #+end_src
 
 ** Comments
@@ -229,7 +229,7 @@ If you like this type of things
 ** Line numbers
 How do you want to display line numbers? t, nil, or relative?
 #+begin_src emacs-lisp
-(setq display-line-numbers-type t)
+;; (setq display-line-numbers-type t)
 #+end_src
 
 ** Starting window dimension
@@ -349,10 +349,10 @@ If you use macos with rbenv on homebrew, add it, uncomment it
 **** Asdf
 ASDF instead of rbenv.
 #+begin_src emacs-lisp
-(add-to-list 'load-path (expand-file-name "~/.config/doom/asdf.el"))
-(require 'asdf)
+;; (add-to-list 'load-path (expand-file-name "~/.config/doom/asdf.el"))
+;; (require 'asdf)
 
-(asdf-enable) ;; This ensures Emacs has the correct paths to asdf shims and bin
+;; (asdf-enable) ;; This ensures Emacs has the correct paths to asdf shims and bin
 #+end_src
 
 *** Testing
@@ -480,26 +480,26 @@ Suggest yasnippet as completion.
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package! yasnippet
-  :config
-  ;; It will test whether it can expand, if yes, change cursor color
-  (defun hp/change-cursor-color-if-yasnippet-can-fire (&optional field)
-    (interactive)
-    (setq yas--condition-cache-timestamp (current-time))
-    (let (templates-and-pos)
-      (unless (and yas-expand-only-for-last-commands
-                   (not (member last-command yas-expand-only-for-last-commands)))
-        (setq templates-and-pos (if field
-                                    (save-restriction
-                                      (narrow-to-region (yas--field-start field)
-                                                        (yas--field-end field))
-                                      (yas--templates-for-key-at-point))
-                                  (yas--templates-for-key-at-point))))
-      (set-cursor-color (if (and templates-and-pos (first templates-and-pos)
-                                 (eq evil-state 'insert))
-                            (doom-color 'red)
-                          (face-attribute 'default :foreground)))))
-  :hook (post-command . hp/change-cursor-color-if-yasnippet-can-fire))
+;; (use-package! yasnippet
+;;   :config
+;;   ;; It will test whether it can expand, if yes, change cursor color
+;;   (defun hp/change-cursor-color-if-yasnippet-can-fire (&optional field)
+;;     (interactive)
+;;     (setq yas--condition-cache-timestamp (current-time))
+;;     (let (templates-and-pos)
+;;       (unless (and yas-expand-only-for-last-commands
+;;                    (not (member last-command yas-expand-only-for-last-commands)))
+;;         (setq templates-and-pos (if field
+;;                                     (save-restriction
+;;                                       (narrow-to-region (yas--field-start field)
+;;                                                         (yas--field-end field))
+;;                                       (yas--templates-for-key-at-point))
+;;                                   (yas--templates-for-key-at-point))))
+;;       (set-cursor-color (if (and templates-and-pos (first templates-and-pos)
+;;                                  (eq evil-state 'insert))
+;;                             (doom-color 'red)
+;;                           (face-attribute 'default :foreground)))))
+;;   :hook (post-command . hp/change-cursor-color-if-yasnippet-can-fire))
 #+end_src
 
 ** LSP mode
@@ -538,41 +538,42 @@ Use sorbet instead solargraph?
 #+end_src
 
 ** Dired
-#+begin_src emacs_lisp
+#+begin_src emacs-lisp
 (map! :leader
-      (:prefix ("d"  "dired")
-       :desc "open dired" "d" #'dired
-       :desc "dired jump to current" "j" #'dired_jump)
+      (:prefix ("d" . "dired")
+       :desc "Open dired" "d" #'dired
+       :desc "Dired jump to current" "j" #'dired-jump)
       (:after dired
-       (:map dired_mode_map
-        :desc "peep_dired image previews" "f v" #'peep_dired
-        :desc "dired view file" "f v" #'dired_view_file)))
+       (:map dired-mode-map
+        :desc "Peep-dired image previews" "f v" #'peep-dired
+        :desc "Dired view file" "f V" #'dired-view-file)))
 #+end_src
 
 *** Mode map
-#+begin_src emacs_lisp
-(evil_define_key 'normal dired_mode_map
-  (kbd "m_ret") 'dired_display_file
-  (kbd "h") 'dired_up_directory
-  (kbd "l") 'dired_open_file ; use dired_find_file instead of dired_open
-  (kbd "m") 'dired_mark
-  (kbd "t") 'dired_toggle_marks
-  (kbd "u") 'dired_unmark
-  (kbd "c") 'dired_do_copy
-  (kbd "d") 'dired_do_delete
-  (kbd "j") 'dired_goto_file
-  (kbd "m") 'dired_do_chmod
-  (kbd "o") 'dired_do_chown
-  (kbd "p") 'dired_do_print
-  (kbd "r") 'dired_do_rename
-  (kbd "t") 'dired_do_touch
-  (kbd "y") 'dired_copy_filenamecopy_filename_as_kill ; copies filename to kill ring
-  (kbd "+") 'dired_create_directory
-  (kbd "_") 'dired_up_directory
-  (kbd "% l") 'dired_downcase
-  (kbd "% u") 'dired_upcase
-  (kbd "; d") 'epa_dired_do_decrypt
-  (kbd "; e") 'epa_dired_do_encrypt)
+#+begin_src emacs-lisp
+(evil-define-key 'normal dired-mode-map
+  (kbd "M-RET") 'dired-display-file
+  (kbd "h") 'dired-up-directory
+  (kbd "l") 'dired-open-file ; use dired-find-file instead of dired-open.
+  (kbd "m") 'dired-mark
+  (kbd "t") 'dired-toggle-marks
+  (kbd "u") 'dired-unmark
+  (kbd "C") 'dired-do-copy
+  (kbd "D") 'dired-do-delete
+  (kbd "J") 'dired-goto-file
+  (kbd "M") 'dired-do-chmod
+  (kbd "O") 'dired-do-chown
+  (kbd "P") 'dired-do-print
+  (kbd "R") 'dired-do-rename
+  (kbd "T") 'dired-do-touch
+  (kbd "Y") 'dired-copy-filenamecopy-filename-as-kill ; copies filename to kill ring.
+  (kbd "+") 'dired-create-directory
+  (kbd "-") 'dired-up-directory
+  (kbd "% l") 'dired-downcase
+  (kbd "% u") 'dired-upcase
+  (kbd "; d") 'epa-dired-do-decrypt
+  (kbd "; e") 'epa-dired-do-encrypt)
+
 #+end_src
 
 **** Peep dired
@@ -888,7 +889,7 @@ org-appear for seemless look:
 *** Installation
 #+begin_src emacs-lisp
 (use-package org-roam
-  :ensure t
+  ;; :ensure t
   :custom
   (org-roam-directory (file-truename "~/RoamNotes"))
   :bind (("C-c n l" . org-roam-buffer-toggle)

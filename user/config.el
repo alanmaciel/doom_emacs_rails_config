@@ -13,10 +13,11 @@
 ;; (setq fancy-splash-image "~/dotfiles-local/emacs/doom.d/splash/lucky-doom-emacs-color.png")
 
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-banner)
+
 (remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-footer)
 
-(setq doom-theme 'doom-monokai-octagon
-      doom-themes-treemacs-enable-variable-pitch nil)
+;; (setq doom-theme 'doom-monokai-octagon
+;;       doom-themes-treemacs-enable-variable-pitch nil)
 
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 ;; (load-theme 'twilight t)
@@ -46,7 +47,7 @@
 (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font Mono" :size 14)
       doom-big-font (font-spec :family "JetBrains Mono" :size 18)
       doom-variable-pitch-font (font-spec :family "Overpass" :size 10)
-      doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light :size 8))
+      doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light :size 10))
 
 (custom-set-faces!
   '(font-lock-comment-face :slant italic))
@@ -98,7 +99,7 @@
       (:prefix ("t" . "toggle")
        :desc "Toggle minimap-mode" "M" #'minimap-mode))
 
-(setq display-line-numbers-type t)
+;; (setq display-line-numbers-type t)
 
 (setq default-frame-alist '((width . 115)(height . 34)))
 
@@ -170,7 +171,7 @@
 ;; (setq rbenv-executable "/usr/local/opt/rbenv/bin/rbenv") ;; Rosetta (intel emulation)
 ;; (setq rbenv-executable "/opt/homebrew/bin/rbenv") ;; Arm (normal brew)
 
-;; (add-to-list 'load-path "~/.config/doom/user/asdf.el")
+;; (add-to-list 'load-path (expand-file-name "~/.config/doom/asdf.el"))
 ;; (require 'asdf)
 
 ;; (asdf-enable) ;; This ensures Emacs has the correct paths to asdf shims and bin
@@ -257,26 +258,26 @@
 ;;   :init
 ;;   (add-to-list 'completion-at-point-functions #'cape-yasnippet))
 
-(use-package! yasnippet
-  :config
-  ;; It will test whether it can expand, if yes, change cursor color
-  (defun hp/change-cursor-color-if-yasnippet-can-fire (&optional field)
-    (interactive)
-    (setq yas--condition-cache-timestamp (current-time))
-    (let (templates-and-pos)
-      (unless (and yas-expand-only-for-last-commands
-                   (not (member last-command yas-expand-only-for-last-commands)))
-        (setq templates-and-pos (if field
-                                    (save-restriction
-                                      (narrow-to-region (yas--field-start field)
-                                                        (yas--field-end field))
-                                      (yas--templates-for-key-at-point))
-                                  (yas--templates-for-key-at-point))))
-      (set-cursor-color (if (and templates-and-pos (first templates-and-pos)
-                                 (eq evil-state 'insert))
-                            (doom-color 'red)
-                          (face-attribute 'default :foreground)))))
-  :hook (post-command . hp/change-cursor-color-if-yasnippet-can-fire))
+;; (use-package! yasnippet
+;;   :config
+;;   ;; It will test whether it can expand, if yes, change cursor color
+;;   (defun hp/change-cursor-color-if-yasnippet-can-fire (&optional field)
+;;     (interactive)
+;;     (setq yas--condition-cache-timestamp (current-time))
+;;     (let (templates-and-pos)
+;;       (unless (and yas-expand-only-for-last-commands
+;;                    (not (member last-command yas-expand-only-for-last-commands)))
+;;         (setq templates-and-pos (if field
+;;                                     (save-restriction
+;;                                       (narrow-to-region (yas--field-start field)
+;;                                                         (yas--field-end field))
+;;                                       (yas--templates-for-key-at-point))
+;;                                   (yas--templates-for-key-at-point))))
+;;       (set-cursor-color (if (and templates-and-pos (first templates-and-pos)
+;;                                  (eq evil-state 'insert))
+;;                             (doom-color 'red)
+;;                           (face-attribute 'default :foreground)))))
+;;   :hook (post-command . hp/change-cursor-color-if-yasnippet-can-fire))
 
 (use-package! lsp-ui
   :config
@@ -574,7 +575,7 @@
 ;;         org-appear-autolinks 'just-brackets))
 
 (use-package org-roam
-  :ensure t
+  ;; :ensure t
   :custom
   (org-roam-directory (file-truename "~/RoamNotes"))
   :bind (("C-c n l" . org-roam-buffer-toggle)
