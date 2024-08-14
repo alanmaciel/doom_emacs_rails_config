@@ -5,7 +5,6 @@
 
 (package! which-key)
 (package! all-the-icons-dired)
-;; (package! treemacs-icons-dired)
 (package! annotate)
 (package! dired-open)
 (package! docker)
@@ -50,6 +49,6 @@
 (package! org-appear)
 (package! org-modern)
 (package! gptel)
-;; (package! olivetti)
+(package! olivetti)
 ;; (package! jetbrains-darcula-theme)
 (unpin! smartparens)
